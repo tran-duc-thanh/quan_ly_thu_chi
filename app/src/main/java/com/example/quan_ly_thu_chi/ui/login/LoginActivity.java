@@ -2,9 +2,11 @@ package com.example.quan_ly_thu_chi.ui.login;
 
 import android.app.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -22,20 +24,27 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.quan_ly_thu_chi.MainActivity;
 import com.example.quan_ly_thu_chi.R;
 import com.example.quan_ly_thu_chi.ui.login.LoginViewModel;
 import com.example.quan_ly_thu_chi.ui.login.LoginViewModelFactory;
 import com.example.quan_ly_thu_chi.databinding.ActivityLoginBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
+    protected FirebaseAuth mFirebaseAuth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mFirebaseAuth = FirebaseAuth.getInstance();
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -117,9 +126,37 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+                mFirebaseAuth.signInWithEmailAndPassword(
+                                usernameEditText.getText().toString(), passwordEditText.getText().toString()).
+                        addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                            @Override
+                            public void onSuccess(AuthResult authResult) {
+                                Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(LoginActivity.this,
+                                        MainActivity.class);
+                                startActivity(intent);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                mFirebaseAuth.createUserWithEmailAndPassword(usernameEditText.getText().toString(), passwordEditText.getText().toString()).
+                                        addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                                            @Override
+                                            public void onSuccess(AuthResult authResult) {
+                                                Toast.makeText(LoginActivity.this,
+                                                        "Register Success", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(LoginActivity.this,
+                                                        MainActivity.class);
+                                                startActivity(intent);
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(LoginActivity.this, "Register Failed", Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                            }
+                        });
             }
         });
     }
