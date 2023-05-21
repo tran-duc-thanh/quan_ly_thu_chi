@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.quan_ly_thu_chi.MainActivity;
 import com.example.quan_ly_thu_chi.R;
+import com.example.quan_ly_thu_chi.RegisterActivity;
 import com.example.quan_ly_thu_chi.ui.login.LoginViewModel;
 import com.example.quan_ly_thu_chi.ui.login.LoginViewModelFactory;
 import com.example.quan_ly_thu_chi.databinding.ActivityLoginBinding;
@@ -54,6 +55,8 @@ public class LoginActivity extends AppCompatActivity {
         final EditText usernameEditText = binding.username;
         final EditText passwordEditText = binding.password;
         final Button loginButton = binding.login;
+        final Button registerBtn = binding.register;
+        final TextView forgotPasswordTv = binding.forgotPassword;
         final ProgressBar loadingProgressBar = binding.loading;
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
@@ -131,7 +134,6 @@ public class LoginActivity extends AppCompatActivity {
                         addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
-                                Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(LoginActivity.this,
                                         MainActivity.class);
                                 startActivity(intent);
@@ -139,25 +141,15 @@ public class LoginActivity extends AppCompatActivity {
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                mFirebaseAuth.createUserWithEmailAndPassword(usernameEditText.getText().toString(), passwordEditText.getText().toString()).
-                                        addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                                            @Override
-                                            public void onSuccess(AuthResult authResult) {
-                                                Toast.makeText(LoginActivity.this,
-                                                        "Register Success", Toast.LENGTH_SHORT).show();
-                                                Intent intent = new Intent(LoginActivity.this,
-                                                        MainActivity.class);
-                                                startActivity(intent);
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(LoginActivity.this, "Register Failed", Toast.LENGTH_LONG).show();
-                                            }
-                                        });
+                                Toast.makeText(LoginActivity.this, "Login false", Toast.LENGTH_LONG).show();
                             }
                         });
             }
+        });
+
+        registerBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
     }
 
