@@ -8,4 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="silver">#c0c0c0</color>
+    <color name="darkgray">#a9a9a9</color>
+    <color name="paleturquoise">#afeeee</color>
+    <color name="darkturquoise">#00ced1</color>
+    <color name="grayBlue">#2E4859</color>
 </resources>

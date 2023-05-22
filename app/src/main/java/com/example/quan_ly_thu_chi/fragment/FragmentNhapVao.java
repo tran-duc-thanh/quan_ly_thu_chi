@@ -31,8 +31,8 @@ public class FragmentNhapVao extends Fragment {
                 FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.getTabAt(0).setText("Chi");
-        tabLayout.getTabAt(1).setText("Thu");
+        tabLayout.getTabAt(0).setText("Tiền chi");
+        tabLayout.getTabAt(1).setText("Tiền thu");
         return view;
     }
 
