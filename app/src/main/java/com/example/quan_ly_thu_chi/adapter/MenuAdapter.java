@@ -1,9 +1,10 @@
 package com.example.quan_ly_thu_chi.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,10 +18,12 @@ import java.util.List;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder> {
 
+    private Context context;
     private List<Menu> items;
     private MenuItemListener listener;
 
-    public MenuAdapter() {
+    public MenuAdapter(Context context) {
+        this.context = context;
         items = new ArrayList<>();
     }
 
@@ -43,7 +46,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
     public void onBindViewHolder(@NonNull MenuViewHolder holder, int position) {
         Menu item = items.get(position);
         if (item == null) return;
-        holder.imageButton.setImageResource(item.getIcon());
+        holder.imageView.setImageResource(item.getIcon());
         holder.textView.setText(item.getName());
     }
 
@@ -58,12 +61,12 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
     public class MenuViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private ImageButton imageButton;
+        private ImageView imageView;
         private TextView textView;
 
         public MenuViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageButton = itemView.findViewById(R.id.menuItemImgBtn);
+            imageView = itemView.findViewById(R.id.menuItemImgBtn);
             textView = itemView.findViewById(R.id.menuItemTv);
             itemView.setOnClickListener(this);
         }

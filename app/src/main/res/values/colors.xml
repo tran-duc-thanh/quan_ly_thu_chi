@@ -12,4 +12,12 @@
     <color name="paleturquoise">#afeeee</color>
     <color name="darkturquoise">#00ced1</color>
     <color name="grayBlue">#2E4859</color>
+    <color name="red">#ff0000</color>
+    <color name="purple">#800080</color>
+    <color name="fuchsia">#ff00ff</color>
+    <color name="green">#008000</color>
+    <color name="lime">#00ff00</color>
+    <color name="yellow">#ffff00</color>
+    <color name="orange">#ffa500</color>
+    <color name="darkred">#8b0000</color>
 </resources>

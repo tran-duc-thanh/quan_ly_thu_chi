@@ -71,15 +71,16 @@
 
     <Button
         android:id="@+id/btnSaveChi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="30dp"
-        android:textColor="@color/white"
-        android:textSize="20dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/button_custom"
         android:text="Nhập khoản thu"
         android:textAllCaps="false"
-        android:background="@drawable/button_custom"
-        app:layout_constraintTop_toBottomOf="@id/recycleViewChi"
+        android:textColor="@color/white"
+        android:textSize="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintTop_toBottomOf="@id/recycleViewChi" />
 </androidx.constraintlayout.widget.ConstraintLayout>

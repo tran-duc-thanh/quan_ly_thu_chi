@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.example.quan_ly_thu_chi.data.model.Menu;
 import com.example.quan_ly_thu_chi.data.model.ThuChi;
+import com.example.quan_ly_thu_chi.data.model.ThuChiDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,6 +104,16 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                     rs.getInt(4), rs.getDouble(3)));
         }
         return results;
+    }
+
+    public ThuChiDTO getInfoThuChi (String sDate, String eDate, int status) {
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor rs = database.rawQuery("SELECT COUNT(id), SUM(t.money) FROM thu_chi t WHERE t.status = ? AND date BETWEEN ? AND ?",
+                new String[]{String.valueOf(status), sDate, eDate});
+        if (rs != null) {
+            return new ThuChiDTO(rs.getDouble(1), rs.getInt(0));
+        }
+        return null;
     }
 
     public Long addThuChi (ThuChi thuChi) {

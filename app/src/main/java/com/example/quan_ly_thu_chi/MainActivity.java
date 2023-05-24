@@ -12,7 +12,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.quan_ly_thu_chi.adapter.FragmentAdapter;
+import com.example.quan_ly_thu_chi.data.SQLiteHelper;
 import com.example.quan_ly_thu_chi.ui.login.LoginActivity;
+import com.example.quan_ly_thu_chi.utils.Constants;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,10 +22,12 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private FragmentAdapter adapter;
     private ViewPager viewPager;
+    private SQLiteHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = new SQLiteHelper(getApplicationContext());
         setContentView(R.layout.activity_main);
         viewPager = findViewById(R.id.viewPage);
         adapter = new FragmentAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -92,5 +96,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        db.getAllMenuByStatus(Constants.STATUS.CHI).forEach(rs -> getResources().getDrawable(rs.getIcon()).setTint(getResources().getColor(rs.getColor())));
+        db.getAllMenuByStatus(Constants.STATUS.THU).forEach(rs -> getResources().getDrawable(rs.getIcon()).setTint(getResources().getColor(rs.getColor())));
+        super.onResume();
     }
 }
