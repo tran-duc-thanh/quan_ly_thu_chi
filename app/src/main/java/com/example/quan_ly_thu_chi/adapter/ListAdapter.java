@@ -9,17 +9,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quan_ly_thu_chi.R;
 import com.example.quan_ly_thu_chi.data.SQLiteHelper;
 import com.example.quan_ly_thu_chi.data.model.Menu;
 import com.example.quan_ly_thu_chi.data.model.ThuChi;
+import com.example.quan_ly_thu_chi.utils.DialogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder> {
+
+    private static final String NOTIFY = "Thông báo";
+    private static final String MESSAGE_NOTIFY_DELETE = "Xác nhận xóa item";
 
     private Context context;
     private List<ThuChi> items;
@@ -58,10 +63,20 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         holder.menuName.setTextColor(holder.menuName.getResources().getColor(menu.getColor()));
         holder.date.setText(item.getDate());
         holder.money.setText(String.valueOf(item.getMoney()));
-        holder.btnDelete.setOnClickListener(view -> {
-            db.deleteThuChi(item.getId());
+        holder.btnDelete.setOnClickListener(view -> removeItem(position));
+    }
+
+    public void removeItem (int position) {
+        ThuChi item = items.get(position);
+        AlertDialog.Builder builder = DialogUtils.createAlertDialog(context, NOTIFY,
+                String.format("%s: %s", MESSAGE_NOTIFY_DELETE, item.getDate()), R.drawable.icon_notify);
+        builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+            db.deleteThuChi(items.remove(position).getId());
             notifyDataSetChanged();
         });
+        builder.setNegativeButton("No", (dialogInterface, i) -> {});
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     @Override
