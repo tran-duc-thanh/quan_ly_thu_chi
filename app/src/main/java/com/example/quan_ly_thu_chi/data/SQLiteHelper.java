@@ -28,15 +28,19 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         StringBuilder sql = new StringBuilder();
         sql.append("CREATE TABLE menu (menuId INTEGER PRIMARY KEY AUTOINCREMENT,");
-        sql.append(" icon INTEGER, name TEXT, color INTEGER, status INTEGER); \n");
-        sql.append("CREATE TABLE thu_chi (id INTEGER PRIMARY KEY AUTOINCREMENT,");
-        sql.append(" menuId INTEGER, note TEXT, money DOUBLE, status INTEGER, date TEXT); \n");
+        sql.append(" icon INTEGER, name TEXT, color INTEGER, status INTEGER);");
+        StringBuilder sql1 = new StringBuilder();
+        sql1.append("CREATE TABLE thu_chi (id INTEGER PRIMARY KEY AUTOINCREMENT,");
+        sql1.append(" menuId INTEGER, note TEXT, money DOUBLE, status INTEGER, date TEXT)");
         sqLiteDatabase.execSQL(sql.toString());
+        sqLiteDatabase.execSQL(sql1.toString());
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+"menu");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+"thu_chi");
+        onCreate(sqLiteDatabase);
     }
 
     public List<Menu> getAllMenuByStatus (Integer status) {
@@ -108,9 +112,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     public ThuChiDTO getInfoThuChi (String sDate, String eDate, int status) {
         SQLiteDatabase database = getReadableDatabase();
-        Cursor rs = database.rawQuery("SELECT COUNT(id), SUM(t.money) FROM thu_chi t WHERE t.status = ? AND date BETWEEN ? AND ?",
+        Cursor rs = database.rawQuery("SELECT COUNT(id), SUM(money) FROM thu_chi WHERE status = ? AND date BETWEEN ? AND ?",
                 new String[]{String.valueOf(status), sDate, eDate});
-        if (rs != null) {
+        if (rs != null && rs.moveToNext()) {
             return new ThuChiDTO(rs.getDouble(1), rs.getInt(0));
         }
         return null;
@@ -120,20 +124,20 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("menuId", thuChi.getMenuId());
         values.put("note", thuChi.getNote());
-        values.put("date", thuChi.getDate());
-        values.put("status", thuChi.getStatus());
         values.put("money", thuChi.getMoney());
+        values.put("status", thuChi.getStatus());
+        values.put("date", thuChi.getDate());
         SQLiteDatabase database = getWritableDatabase();
-        return database.insert("thu_chi", null, values);
+        return database.insert("thu_chi", "note", values);
     }
 
     public int updateThuChi (ThuChi thuChi) {
         ContentValues values = new ContentValues();
         values.put("menuId", thuChi.getMenuId());
         values.put("note", thuChi.getNote());
-        values.put("date", thuChi.getDate());
-        values.put("status", thuChi.getStatus());
         values.put("money", thuChi.getMoney());
+        values.put("status", thuChi.getStatus());
+        values.put("date", thuChi.getDate());
         SQLiteDatabase database = getWritableDatabase();
         String whereClause = "id = ?";
         String[] whereArgs = {String.valueOf(thuChi.getId())};
