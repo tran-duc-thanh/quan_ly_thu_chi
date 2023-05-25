@@ -27,6 +27,10 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         items = new ArrayList<>();
     }
 
+    public List<Menu> getItems() {
+        return items;
+    }
+
     public void setItems(List<Menu> items) {
         this.items = items;
     }
@@ -38,7 +42,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
     @NonNull
     @Override
     public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_menu, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_menu, parent, false);
         return new MenuViewHolder(itemView);
     }
 
@@ -47,7 +51,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         Menu item = items.get(position);
         if (item == null) return;
         holder.imageView.setImageResource(item.getIcon());
+        holder.imageView.getResources().getDrawable(item.getIcon()).setTint(holder.imageView.getResources().getColor(item.getColor()));
         holder.textView.setText(item.getName());
+        holder.textView.setTextColor(holder.textView.getResources().getColor(item.getColor()));
     }
 
     @Override

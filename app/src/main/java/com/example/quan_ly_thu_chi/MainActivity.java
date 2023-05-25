@@ -104,4 +104,5 @@ public class MainActivity extends AppCompatActivity {
         db.getAllMenuByStatus(Constants.STATUS.THU).forEach(rs -> getResources().getDrawable(rs.getIcon()).setTint(getResources().getColor(rs.getColor())));
         super.onResume();
     }
+
 }

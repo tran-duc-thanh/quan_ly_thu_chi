@@ -56,7 +56,10 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public Menu getOneMenu (int id) {
         SQLiteDatabase database = getReadableDatabase();
         Cursor rs = database.rawQuery("SELECT * FROM menu WHERE menuId = ?", new String[]{String.valueOf(id)});
-        return new Menu(rs.getInt(0), rs.getString(2), rs.getInt(1), rs.getInt(3), rs.getInt(4));
+        if (rs != null && rs.moveToNext()) {
+            return new Menu(rs.getInt(0), rs.getString(2), rs.getInt(1), rs.getInt(3), rs.getInt(4));
+        }
+        return null;
     }
 
     public Long addMenu (Menu menu) {
@@ -95,14 +98,17 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public ThuChi getOneThuChi (int id) {
         SQLiteDatabase database = getReadableDatabase();
         Cursor rs = database.rawQuery("SELECT * FROM thu_chi WHERE id = ?", new String[]{String.valueOf(id)});
-        return new ThuChi(rs.getInt(0), rs.getInt(1), rs.getString(2), rs.getString(5),
-                rs.getInt(4), rs.getDouble(3));
+        if (rs != null && rs.moveToNext()) {
+            return new ThuChi(rs.getInt(0), rs.getInt(1), rs.getString(2), rs.getString(5),
+                    rs.getInt(4), rs.getDouble(3));
+        }
+        return null;
     }
 
-    public List<ThuChi> searchThuChi (String sDate, String eDate) {
+    public List<ThuChi> searchThuChi (String sDate, String eDate, int status) {
         List<ThuChi> results = new ArrayList<>();
         SQLiteDatabase database = getReadableDatabase();
-        Cursor rs = database.rawQuery("SELECT * FROM thu_chi WHERE date BETWEEN ? AND ?", new String[]{sDate, eDate});
+        Cursor rs = database.rawQuery("SELECT * FROM thu_chi WHERE status = ? AND date BETWEEN ? AND ?", new String[]{String.valueOf(status), sDate, eDate});
         while (rs != null && rs.moveToNext()) {
             results.add(new ThuChi(rs.getInt(0), rs.getInt(1), rs.getString(2), rs.getString(5),
                     rs.getInt(4), rs.getDouble(3)));

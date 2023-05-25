@@ -1,6 +1,7 @@
 package com.example.quan_ly_thu_chi.fragment;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.quan_ly_thu_chi.FragmentAddOrEditMenu;
+import com.example.quan_ly_thu_chi.ListActivity;
 import com.example.quan_ly_thu_chi.R;
 import com.example.quan_ly_thu_chi.data.SQLiteHelper;
 import com.example.quan_ly_thu_chi.data.model.ThuChiDTO;
@@ -38,6 +41,22 @@ public class FragmentBaoCao extends Fragment {
         sDate.setOnClickListener(view1 -> createDatePickerDialog(sDate).show());
         eDate.setOnClickListener(view1 -> createDatePickerDialog(eDate).show());
         btnStart.setOnClickListener(view1 -> {if (validate()) setData();});
+        btnDetailChi.setOnClickListener(view1 -> {
+            if (!validate()) return;
+            Intent intent = new Intent(view.getContext(), ListActivity.class);
+            intent.putExtra("status", Constants.STATUS.CHI);
+            intent.putExtra("sDate", sDate.getText().toString());
+            intent.putExtra("eDate", eDate.getText().toString());
+            startActivity(intent);
+        });
+        btnDetailThu.setOnClickListener(view1 -> {
+            if (!validate()) return;
+            Intent intent = new Intent(view.getContext(), ListActivity.class);
+            intent.putExtra("status", Constants.STATUS.THU);
+            intent.putExtra("sDate", sDate.getText().toString());
+            intent.putExtra("eDate", eDate.getText().toString());
+            startActivity(intent);
+        });
         return view;
     }
 

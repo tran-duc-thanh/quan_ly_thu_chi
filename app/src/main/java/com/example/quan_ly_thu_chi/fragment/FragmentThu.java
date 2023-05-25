@@ -50,7 +50,7 @@ public class FragmentThu extends Fragment implements MenuAdapter.MenuItemListene
         btnSave.setOnClickListener(view1 -> {if (validate()) save();});
         btnAdd.setOnClickListener(view1 -> {
             Intent intent = new Intent(view.getContext(), FragmentAddOrEditMenu.class);
-            intent.putExtra("status", 1);
+            intent.putExtra("status", Constants.STATUS.THU);
             startActivity(intent);
         });
         date.setOnClickListener(view1 -> createDatePickerDialog().show());

@@ -27,9 +27,11 @@ import android.widget.Toast;
 import com.example.quan_ly_thu_chi.MainActivity;
 import com.example.quan_ly_thu_chi.R;
 import com.example.quan_ly_thu_chi.RegisterActivity;
+import com.example.quan_ly_thu_chi.data.SQLiteHelper;
 import com.example.quan_ly_thu_chi.ui.login.LoginViewModel;
 import com.example.quan_ly_thu_chi.ui.login.LoginViewModelFactory;
 import com.example.quan_ly_thu_chi.databinding.ActivityLoginBinding;
+import com.example.quan_ly_thu_chi.utils.Constants;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -40,11 +42,12 @@ public class LoginActivity extends AppCompatActivity {
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
     protected FirebaseAuth mFirebaseAuth;
+    private SQLiteHelper db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        db = new SQLiteHelper(getApplicationContext());
         mFirebaseAuth = FirebaseAuth.getInstance();
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -161,5 +164,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onResume() {
+        db.getAllMenuByStatus(Constants.STATUS.CHI).forEach(rs -> getResources().getDrawable(rs.getIcon()).setTint(getResources().getColor(rs.getColor())));
+        db.getAllMenuByStatus(Constants.STATUS.THU).forEach(rs -> getResources().getDrawable(rs.getIcon()).setTint(getResources().getColor(rs.getColor())));
+        super.onResume();
     }
 }

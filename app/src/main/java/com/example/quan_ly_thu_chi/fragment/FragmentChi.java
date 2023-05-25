@@ -52,7 +52,7 @@ public class FragmentChi extends Fragment implements MenuAdapter.MenuItemListene
         btnSave.setOnClickListener(view1 -> {if (validate()) save();});
         btnAdd.setOnClickListener(view1 -> {
             Intent intent = new Intent(view.getContext(), FragmentAddOrEditMenu.class);
-            intent.putExtra("status", 0);
+            intent.putExtra("status", Constants.STATUS.CHI);
             startActivity(intent);
         });
         date.setOnClickListener(view1 -> createDatePickerDialog().show());
@@ -103,7 +103,6 @@ public class FragmentChi extends Fragment implements MenuAdapter.MenuItemListene
         }
         recyclerView.getChildAt(position).setBackgroundColor(ContextCompat.getColor(view.getContext() ,R.color.darkturquoise));
         index = position;
-        Toast.makeText(view.getContext(), menu.getName(), Toast.LENGTH_SHORT).show();
     }
 
     private List<Menu> getListMenu () {
